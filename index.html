@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <!-- Фиксация масштаба для исключения зума -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Нексус | Инициация</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- SDK для корректного отображения внутри Telegram -->
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <style>
+        body { 
+            background-color: var(--tg-theme-bg-color, #0a0a0a); 
+            color: var(--tg-theme-text-color, #e5e7eb); 
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            overscroll-behavior: none; /* Запрет резинового скролла */
+        }
+        .glass { 
+            background: rgba(255, 255, 255, 0.05); 
+            backdrop-filter: blur(10px); 
+            border: 1px solid rgba(255, 255, 255, 0.1); 
+        }
+    </style>
+</head>
+<body class="min-h-screen p-4 flex flex-col pb-24">
+
+    <div id="app" class="w-full max-w-lg mx-auto">
+        <!-- Шапка -->
+        <header class="flex justify-between items-center mb-6">
+            <h1 class="text-xl font-bold tracking-tighter uppercase">Nexus_Core</h1>
+            <div id="balance" class="text-sm font-mono opacity-70">XP: 50</div>
+        </header>
+
+        <!-- Контент -->
+        <main id="content" class="space-y-4">
+            <!-- Начальный экран -->
+            <div id="screen-home" class="glass p-6 rounded-2xl">
+                <h2 class="text-2xl font-bold mb-2">Инициация</h2>
+                <p class="opacity-60 mb-6 text-sm">Твой город — это поле боя. Ты готов сделать первый ход?</p>
+                <button onclick="showScreen('tasks')" class="w-full bg-white text-black py-4 rounded-xl font-bold active:scale-95 transition-transform">
+                    НАЧАТЬ КВЕСТ
+                </button>
+            </div>
+
+            <!-- Список квестов -->
+            <div id="screen-tasks" class="hidden space-y-3">
+                <h3 class="text-lg font-bold opacity-80">Доступные цели</h3>
+                <div class="glass p-5 rounded-2xl active:border-green-500 transition border border-transparent">
+                    <div class="flex justify-between mb-2">
+                        <span class="font-bold">Тайник 01</span>
+                        <span class="text-green-400 text-sm font-bold">+60 XP</span>
+                    </div>
+                    <p class="text-xs opacity-50">Локация: Центр, Трубочист</p>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Навигация (прилипает к низу всегда) -->
+    <nav class="fixed bottom-0 left-0 right-0 p-4 bg-[#111]/90 backdrop-blur-xl border-t border-white/10 flex justify-around">
+        <button onclick="showScreen('home')" class="text-[10px] font-bold tracking-widest opacity-60 hover:opacity-100">ГЛАВНАЯ</button>
+        <button onclick="showScreen('tasks')" class="text-[10px] font-bold tracking-widest text-green-400">КВЕСТЫ</button>
+        <button class="text-[10px] font-bold tracking-widest opacity-60 hover:opacity-100">ПРОФИЛЬ</button>
+    </nav>
+
+    <script>
+        // Инициализация Telegram WebApp
+        const tg = window.Telegram.WebApp;
+        tg.expand(); // Разворачиваем на весь экран
+        tg.enableClosingConfirmation(); // Защита от случайного закрытия
+
+        function showScreen(screenId) {
+            document.querySelectorAll('main > div').forEach(div => div.classList.add('hidden'));
+            document.getElementById('screen-' + screenId).classList.remove('hidden');
+        }
+    </script>
+</body>
+</html>
